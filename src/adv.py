@@ -1,4 +1,6 @@
+import textwrap
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -39,13 +41,41 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 
+my_player = Player("Nayomi", room["outside"])
+
 # Write a loop that:
 #
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
-#
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
+dir = ""
+while not dir == "q":
+    print(my_player.current_room.name)
+    print(textwrap.fill(my_player.current_room.description, 50))
+    dir = input("[n] North  [s] South  [e] East  [w] West  [q] Quit\n").lower()
+    if dir == "n":
+        if my_player.current_room.n_to is not None:
+            my_player.current_room = my_player.current_room.n_to
+        else:
+            print("You can't move north. Choose another direction.")
+    elif dir == "s":
+        if my_player.current_room.s_to is not None:
+            my_player.current_room = my_player.current_room.s_to
+        else:
+            print("You can't move south. Choose another direction.")
+    elif dir == "e":
+        if my_player.current_room.e_to is not None:
+            my_player.current_room = my_player.current_room.e_to
+        else:
+            print("You can't move east. Choose another direction.")
+    elif dir == "w":
+        if my_player.current_room.w_to is not None:
+            my_player.current_room = my_player.current_room.w_to
+        else:
+            print("You can't move west. Choose another direction.")
+    elif dir == "q":
+        exit()
+    else:
+        print("Incorrect input. Please type 'n', 's', 'w' or 'e'.")
